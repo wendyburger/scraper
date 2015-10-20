@@ -52,3 +52,7 @@ gem 'simple_form'
 
 #devise
 gem 'devise'
+
+#validates_url -- This gem adds the capability of validating URLs to ActiveRecord and ActiveModel (Rails 3).
+gem "validate_url"
+
