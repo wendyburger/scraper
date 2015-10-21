@@ -59,3 +59,5 @@ gem 'validate_url'
 #nokogiri -- Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser
 gem 'nokogiri'
 
+#utf8_utils
+gem 'utf8_utils'

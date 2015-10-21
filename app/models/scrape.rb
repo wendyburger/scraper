@@ -2,9 +2,9 @@ class Scrape
 
   attr_accessor :title, :hotness, :rating, :director, :image_url, :genre, :release_date, :runtime, :synopsis, :failure
 
-  def scrape_new_movie
+  def scrape_new_movie(url)
     begin
-      doc = Nokogiri::HTML(open("http://www.rottentomatoes.com/m/the_martian/?search=martian"))
+      doc = Nokogiri::HTML(open(url))
       
       doc.css('script').remove
       self.title = doc.at("//h1[@itemprop = 'name']").text
@@ -15,11 +15,8 @@ class Scrape
       self.genre = doc.at("//span[@itemprop = 'genre']").text      
       self.release_date = doc.at("//td[@itemprop = 'datePublished']").text.to_date
       self.runtime = doc.at("//time[@itemprop = 'duration']").text
-      s = doc.css("#movieSynopsis").text
-
-      if ! s.valid_encoding?
-        s = s.encode("UTF-16be", :invalid => :replace, :replace => "?").encode('UTF-8')
-      end
+      self.synopsis = doc.css("#movieSynopsis").text
+      
       return true
     rescue Exception => e
       self.failure = "Somthing went wrong with the scrape"
@@ -27,19 +24,5 @@ class Scrape
   end
 
 
-  def save_movie
-    movie = Movie.new(
-      title: self.title,
-      hotness: self.hotness,
-      rating: self.rating,
-      director: self.director,
-      image_url: self.image_url,
-      genre: self.genre,
-      release_date: self.release_date,
-      runtime: self.runtime,
-      synopsis: self.synopsis
-      )
-    movie.save
-  end
 
 end
